@@ -29,7 +29,7 @@ You will need to create a developer account [here](https://opendata-ajuntament.b
 
 once you have the API key. You will need to add it to the `.env.example` file in this repository, and then rename this file to `.env`
 
-To do this in shell run ```sh cp .env.example .env ```
+To do this in shell run ```cp .env.example .env ```
 
 ### 4 Run streamlit app
 
