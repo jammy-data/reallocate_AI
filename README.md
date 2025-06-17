@@ -33,10 +33,10 @@ To do this in shell run ```cp .env.example .env ```
 
 ### 4 Run streamlit app
 
-Install the package in editable mode (recommended):
+You can start the app and begin navigating the dashboard by entering into the terminal:
 
 ```sh
-uv pip install -e .
+streamlit run Home.py
 ```
 
 This project was create with uv.
