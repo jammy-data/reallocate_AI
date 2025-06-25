@@ -18,5 +18,7 @@ dependencies = [
     "jupyterlab",
     "notebook",
     "ipython",
-    "plotly"
+    "plotly",
+    "ckanapi>=4.8",
+    "pyarrow>=20.0.0",
 ]
