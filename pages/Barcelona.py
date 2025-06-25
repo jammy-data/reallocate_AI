@@ -7,11 +7,13 @@ import pandas as pd
 import plotly.express as px
 import geopandas as gpd
 from shapely.geometry import Point
+from dotenv import load_dotenv
 
+load_dotenv()
 st.logo("images/reallocate_logo.png", size = 'large')
 
 # Define your datasets and the shared API key
-API_KEY = "e58ce2d31573401158da989c0906bb09"
+API_KEY = os.getenv("API_KEY")
 API_URL = "https://portaldades.ajuntament.barcelona.cat/services/backend/rest/statistic/export"
 DATASET_URL = 'https://opendata-ajuntament.barcelona.cat/data/api/action/datastore_search'
 #Add the datasets we need here
