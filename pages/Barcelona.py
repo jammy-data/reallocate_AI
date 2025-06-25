@@ -45,7 +45,8 @@ def load_data(url):
         if "application/json" in content_type:
             df = pd.DataFrame(response.json())
         elif "text/csv" in content_type or "application/csv" in content_type:
-            df = pd.read_csv(StringIO(response.text))
+            decoded_text = response.content.decode('utf-8')  
+            df = pd.read_csv(StringIO(decoded_text))
         elif "application/octet-stream" in content_type:
             df = pd.read_csv(BytesIO(response.content))
         else:
