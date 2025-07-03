@@ -9,6 +9,9 @@ import geopandas as gpd
 from shapely.geometry import Point
 from dotenv import load_dotenv
 import os
+from ckanapi import RemoteCKAN
+from utils.helpers import load_parquet_from_ckan
+
 load_dotenv()
 st.logo("images/reallocate_logo.png", size = 'large')
 
