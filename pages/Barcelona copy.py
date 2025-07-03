@@ -9,21 +9,32 @@ import geopandas as gpd
 from shapely.geometry import Point
 from dotenv import load_dotenv
 import os
+import sys
+# --- ADD THESE TWO LINES AT THE VERY TOP, AFTER BASIC IMPORTS ---
+# Ensure the project root is in sys.path for module discovery
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+# -----------------------------------------------------------------
+
+# (Your debug print statements can stay for now, but remove them later)
+print("\n--- DEBUGGER PATH DIAGNOSIS ---")
+print(f"Current Working Directory (os.getcwd()): {os.getcwd()}")
+print("Python Module Search Path (sys.path):")
+for i, p in enumerate(sys.path):
+    print(f"  [{i}]: {p}")
+print("--- END DEBUGGER PATH DIAGNOSIS ---\n")
 from ckanapi import RemoteCKAN
 from utils.helpers import load_parquet_from_ckan
 
 load_dotenv()
 st.logo("images/reallocate_logo.png", size = 'large')
 
-# Define your datasets and the shared API key
-API_KEY = os.getenv("API_KEY")
-API_URL = "https://reallocate-ckan.iti.gr"
-ckan = RemoteCKAN(API_URL, apikey=API_KEY)
-#Add the datasets we need here
+
 DATASETS = {
-    "Walking journeys": API_URL + "?id=wc9hkmubl7&fileformat=CSV",
-    "Bike & PMV by sex": API_URL + "?id=5cid3dkbbx&fileformat=CSV",
-    "Public accessibility": DATASET_URL + "?resource_id=8c8cbb08-31e1-4c0b-92e5-c01e6598469c"
+    "Walking journeys": "trips_walking",
+    "Bike & PMV by sex": "bike_and_pmv_by_sex",
+    "Public accessibility": "streets_accessibility"
 }
 #Add a home button to go back to the homepage
 if st.button("Homepage"):
@@ -35,67 +46,33 @@ dataset_name = st.selectbox("Choose a dataset", list(DATASETS.keys()))
 
 # Fetch data
 url = DATASETS[dataset_name]
-headers = {"X-IBM-Client-Id": API_KEY}  # or use "?api_key=..." if it's query-based
-headers_gdf = {'Authorization': API_KEY}
 
-@st.cache_data
-def load_data(url):
-    # Try standard tabular headers first
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
-    content_type = response.headers.get("Content-Type", "").lower()
-
-    # Try to load as tabular data
-    try:
-        if "application/json" in content_type:
-            df = pd.DataFrame(response.json())
-        elif "text/csv" in content_type or "application/csv" in content_type:
-            decoded_text = response.content.decode('utf-8')  
-            df = pd.read_csv(StringIO(decoded_text))
-        elif "application/octet-stream" in content_type:
-            df = pd.read_csv(BytesIO(response.content))
-        else:
-            raise ValueError("Unknown content type")
-
-        # Quick heuristic: wrong header gives dummy column like "help"
-        if df.columns[0].lower() == "help":
-            raise ValueError("Got fallback/help response — retrying as GeoDataFrame")
-
-        return df
-
-    except Exception:
-        # Retry using GeoDataFrame headers
-        response = requests.get(url, headers=headers_gdf)
-        response.raise_for_status()
-        data = response.json()
-        df = pd.DataFrame(data['result']['records'])
-        return df
+df = load_parquet_from_ckan(url)
 
 
 try:
-    df = load_data(url)
-    #df[df.columns[0]] = pd.to_datetime(df['Dim-00:TEMPS'], utc=True)
     st.write(f"Preview of **{dataset_name}**:")
     st.dataframe(df.head())
     # Exclude 'Dim-00:TEMPS' from VARIABLES
 #    # We need to create a specific if function to handle geographic dataframes
     if 'Gis_X' in df.columns:
         # Create a GeoDataFrame from the DataFrame
-        geometry = [Point(xy) for xy in zip(df['Longitud_X_WGS84'], df['Latitud_Y_WGS84'])]
-        gdf = gpd.GeoDataFrame(df, geometry = geometry, crs="EPSG:4326")
+        geometry = [Point(xy) for xy in zip(df['Gis_X'], df['Gis_Y'])]
+        gdf = gpd.GeoDataFrame(df, geometry = geometry, crs="EPSG:25831")
+        gdf = gdf.to_crs(epsg=4326)
         gdf["lati"] = gdf.geometry.y
         gdf["longi"] = gdf.geometry.x
         fig = px.scatter_map(
-        gdf,
-        lat=gdf['lati'],
-        lon=gdf["longi"],
-        color='Situació',
-        zoom = 10,
-        hover_data = {"Data d'Alta":True,
-                   "Situació": True,
-                   "lati": False,
-                   "longi": False},
-   )
+            gdf,
+            lat=gdf['lati'],
+            lon=gdf["longi"],
+            color='Situació',
+            zoom = 10,
+            hover_data = {"Data d'Alta":True,
+                       "Situació": True,
+                       "lati": False,
+                       "longi": False},
+       )
         fig.update_layout(map_style="carto-darkmatter")
         st.plotly_chart(fig)
     else:
