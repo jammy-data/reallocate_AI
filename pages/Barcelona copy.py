@@ -110,7 +110,7 @@ st.markdown(
     """
     <style>
     .image-container {
-        display: flex; /* Makes the children (images) display in a row */
+        display: flex; /* Makes the images display in a row */
         justify-content: center; /* Centers the images horizontally */
         align-items: center; /* Vertically aligns images if they have different heights */
         gap: 20px; /* Adds space between the images */
