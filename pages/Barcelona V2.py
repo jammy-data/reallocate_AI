@@ -1,25 +1,21 @@
 # app.py
-
 import os
 import sys
-from io import StringIO, BytesIO
-
 import streamlit as st
-import pandas as pd
 import geopandas as gpd
 import plotly.express as px
-import requests
 from shapely.geometry import Point
 from dotenv import load_dotenv
+
+from utils.helpers import load_parquet_from_ckan  # Custom function
+from utils.layout import  show_logos_from_list
 
 # Ensure project root is in path for module discovery
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from utils.helpers import load_parquet_from_ckan  # Custom function
-from utils.layout import show_logo_image, show_separator, show_logos_from_list
-from ckanapi import RemoteCKAN  # External library
+
 
 # -------------------------- CONFIG --------------------------
 load_dotenv()
@@ -33,8 +29,11 @@ DATASETS = {
 # ---------------------- HELPER FUNCTIONS ----------------------
 
 def display_geodata(df):
-    geometry = [Point(xy) for xy in zip(df['Gis_X'], df['Gis_Y'])]
-    gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:25831").to_crs(epsg=4326)
+    if "geometry" not in df.columns:
+        df = df.copy()
+        df["geometry"] = gpd.points_from_xy(df["Gis_X"], df["Gis_Y"], crs="EPSG:25831")
+    gdf = gpd.GeoDataFrame(df, geometry="geometry").to_crs("EPSG:4326")
+
     gdf["GIS_lat"] = gdf.geometry.y
     gdf["GIS_long"] = gdf.geometry.x
 
@@ -49,13 +48,13 @@ def display_geodata(df):
         gdf,
         lat="GIS_lat",
         lon="GIS_long",
-        # color=variable_name,
+        color=variable_name,
         zoom=10,
         hover_data={
             "Data d'Alta": True,
             "Situació": True,
-            "lati": False,
-            "longi": False
+            "GIS_lat": False,
+            "GIS_long": False
         }
     )
     fig.update_layout(map_style="carto-darkmatter")
