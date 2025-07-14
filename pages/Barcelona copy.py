@@ -1,148 +1,148 @@
-"""Streamlit app to fetch and display datasets from a given API with caching and error handling."""
+# app.py
 
-from io import StringIO, BytesIO
-import streamlit as st 
-import requests
-import pandas as pd
-import plotly.express as px
-import geopandas as gpd
-from shapely.geometry import Point
-from dotenv import load_dotenv
 import os
 import sys
-# --- ADD THESE TWO LINES AT THE VERY TOP, AFTER BASIC IMPORTS ---
-# Ensure the project root is in sys.path for module discovery
+from io import StringIO, BytesIO
+
+import streamlit as st
+import pandas as pd
+import geopandas as gpd
+import plotly.express as px
+import requests
+from shapely.geometry import Point
+from dotenv import load_dotenv
+
+# Ensure project root is in path for module discovery
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
-# -----------------------------------------------------------------
 
-# (Your debug print statements can stay for now, but remove them later)
-print("\n--- DEBUGGER PATH DIAGNOSIS ---")
-print(f"Current Working Directory (os.getcwd()): {os.getcwd()}")
-print("Python Module Search Path (sys.path):")
-for i, p in enumerate(sys.path):
-    print(f"  [{i}]: {p}")
-print("--- END DEBUGGER PATH DIAGNOSIS ---\n")
-from ckanapi import RemoteCKAN
-from utils.helpers import load_parquet_from_ckan
+from utils.helpers import load_parquet_from_ckan  # Custom function
+from ckanapi import RemoteCKAN  # External library
 
+# -------------------------- CONFIG --------------------------
 load_dotenv()
-st.logo("images/reallocate_logo.png", size = 'large')
-
 
 DATASETS = {
     "Walking journeys": "trips_walking",
     "Bike & PMV by sex": "bike_and_pmv_by_sex",
     "Public accessibility": "streets_accessibility"
 }
-#Add a home button to go back to the homepage
-if st.button("Homepage"):
-    st.switch_page("Home.py")
 
-# Streamlit dropdown
-st.title("Dataset Explorer")
-dataset_name = st.selectbox("Choose a dataset", list(DATASETS.keys()))
+LOGOS = [
+    {
+        "src": "https://reallocatemobility.eu/maintemplate/data/logos/logo.png",
+        "href": "https://reallocatemobility.eu",
+        "alt": "Reallocate Logo"
+    },
+    {
+        "src": "https://www.bsc.es/sites/default/files/public/styles/bscw2_-_simple_crop_style/public/bscw2/pages/discover-bsc/bsc-branding-identity-logo-header_0.jpg?itok=BdjkMwL6&sc=569a3a63c536723072a6d292da3890ca",
+        "href": "https://www.bsc.es",
+        "alt": "BSC Logo"
+    }
+]
 
-# Fetch data
-url = DATASETS[dataset_name]
+# ---------------------- HELPER FUNCTIONS ----------------------
 
-df = load_parquet_from_ckan(url)
+def display_geodata(df):
+    geometry = [Point(xy) for xy in zip(df['Gis_X'], df['Gis_Y'])]
+    gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:25831").to_crs(epsg=4326)
+    gdf["GIS_lat"] = gdf.geometry.y
+    gdf["GIS_long"] = gdf.geometry.x
 
+    geo_cols = [col for col in gdf.columns if 'GIS' in col.upper()]
+    time_cols = [col for col in gdf.columns if 'Data' in col]
+    exclude = geo_cols + time_cols
+    VARIABLES = [col for col in gdf.columns if col not in exclude]
 
-try:
-    st.write(f"Preview of **{dataset_name}**:")
-    st.dataframe(df.head())
-    # Exclude 'Dim-00:TEMPS' from VARIABLES
-#    # We need to create a specific if function to handle geographic dataframes
-    if 'Gis_X' in df.columns:
-        # Create a GeoDataFrame from the DataFrame
-        geometry = [Point(xy) for xy in zip(df['Gis_X'], df['Gis_Y'])]
-        gdf = gpd.GeoDataFrame(df, geometry = geometry, crs="EPSG:25831")
-        gdf = gdf.to_crs(epsg=4326)
-        gdf["lati"] = gdf.geometry.y
-        gdf["longi"] = gdf.geometry.x
-        fig = px.scatter_map(
-            gdf,
-            lat=gdf['lati'],
-            lon=gdf["longi"],
-            color='Situació',
-            zoom = 10,
-            hover_data = {"Data d'Alta":True,
-                       "Situació": True,
-                       "lati": False,
-                       "longi": False},
-       )
-        fig.update_layout(map_style="carto-darkmatter")
-        st.plotly_chart(fig)
-    else:
-        VARIABLES = [col for col in df.columns if col != 'Dim-00:TEMPS']
-        variable_name = st.selectbox("Choose a variable", VARIABLES)
-        grouped = df.groupby(['Dim-00:TEMPS', variable_name]).sum()
-        grouped['VALUE'].unstack(variable_name)
-        grouped = grouped.reset_index()
-    # Two columns
- #   col1, col2 = st.columns(2)
- #   with col1:
-    # Simple Plotly graph
-        fig = px.line(grouped, x=grouped['Dim-00:TEMPS'], y=grouped['VALUE'], color= variable_name,title=f"{dataset_name} Overview")
-        st.plotly_chart(fig)
+    variable_name = st.selectbox("Choose a variable", VARIABLES)
 
-except Exception as e:
-    st.error(f"Failed to load data: {e}")
+    fig = px.scatter_map(
+        gdf,
+        lat="GIS_lat",
+        lon="GIS_long",
+        # color=variable_name,
+        zoom=10,
+        hover_data={
+            "Data d'Alta": True,
+            "Situació": True,
+            "lati": False,
+            "longi": False
+        }
+    )
+    fig.update_layout(map_style="carto-darkmatter")
+    st.plotly_chart(fig)
 
-##########################################################
-st.write("---")
+def display_timeseries(df):
+    time_col = 'Dim-00:TEMPS'
+    VARIABLES = [col for col in df.columns if col != time_col]
 
-# --- Define paths and links for both images ---
-# Image 1
-image_path_1 = "https://reallocatemobility.eu/maintemplate/data/logos/logo.png"
-link_url_1 = "https://reallocatemobility.eu"
-alt_text_1 = "Reallocate Logo - Click to go to Google"
+    variable_name = st.selectbox("Choose a variable", VARIABLES)
+    grouped = df.groupby([time_col, variable_name]).sum(numeric_only=True).reset_index()
 
-# Image 2
-image_path_2 = "https://www.bsc.es/sites/default/files/public/styles/bscw2_-_simple_crop_style/public/bscw2/pages/discover-bsc/bsc-branding-identity-logo-header_0.jpg?itok=BdjkMwL6&sc=569a3a63c536723072a6d292da3890ca"
-link_url_2 = "https://www.bsc.es" # Replace with your second link
-alt_text_2 = "Partner Logo - Click to go to Example.com"
+    fig = px.line(
+        grouped,
+        x=time_col,
+        y='VALUE',
+        color=variable_name,
+        title=f"Overview of {variable_name}"
+    )
+    st.plotly_chart(fig)
 
-# --- Inject Custom CSS for Flexbox Layout ---
-st.markdown(
-    """
+def inject_footer_logos(logos):
+    css = """
     <style>
     .image-container {
-        display: flex; /* Makes the images display in a row */
-        justify-content: center; /* Centers the images horizontally */
-        align-items: center; /* Vertically aligns images if they have different heights */
-        gap: 20px; /* Adds space between the images */
-        margin-top: 20px; /* Add some space above the container */
-        margin-bottom: 20px; /* Add some space below the container */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin: 20px 0;
     }
-
     .image-container img {
-        height: auto; /* Maintain aspect ratio */
-        max-height: 80px; /* Set a max height for both images */
-        width: auto; /* Let width adjust based on height */
-        max-width: 150px; /* Set a max width for both images */
-        /* Add any other common styling here, e.g., border, border-radius */
+        max-height: 80px;
+        max-width: 150px;
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+    """
+    st.markdown(css, unsafe_allow_html=True)
 
-# --- Use Markdown to embed HTML with both linked images ---
-st.markdown(
-    f"""
-    <div class="image-container">
-        <a href="{link_url_1}" target="_blank">
-            <img src="{image_path_1}" alt="{alt_text_1}">
-        </a>
-        <a href="{link_url_2}" target="_blank">
-            <img src="{image_path_2}" alt="{alt_text_2}">
-        </a>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+    html = '<div class="image-container">'
+    for logo in logos:
+        html += f'<a href="{logo["href"]}" target="_blank"><img src="{logo["src"]}" alt="{logo["alt"]}"></a>'
+    html += "</div>"
 
-st.write("---")
+    st.markdown(html, unsafe_allow_html=True)
+
+# ---------------------- MAIN APP ----------------------
+
+def main():
+    st.set_page_config(page_title="Dataset Explorer")
+    st.logo("images/reallocate_logo.png", size='large')
+    st.title("Dataset Explorer")
+
+    if st.button("Homepage"):
+        st.switch_page("Home.py")
+
+    dataset_name = st.selectbox("Choose a dataset", list(DATASETS.keys()))
+    dataset_key = DATASETS[dataset_name]
+
+    try:
+        df = load_parquet_from_ckan(dataset_key)
+        st.write(f"Preview of **{dataset_name}**:")
+        st.dataframe(df.head())
+
+        if 'Gis_X' in df.columns and 'Gis_Y' in df.columns:
+            display_geodata(df)
+        else:
+            display_timeseries(df)
+
+    except Exception as e:
+        st.error(f"Failed to load data: {e}")
+
+    st.write("---")
+    inject_footer_logos(LOGOS)
+    st.write("---")
+
+if __name__ == "__main__":
+    main()
