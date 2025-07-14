@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.layout import show_logos, show_separator, show_logo_image
+from utils.layout import show_separator, show_logo_image, show_logos_from_list
 from utils.constants import PILOTS
 
 st.set_page_config(page_title="Home", page_icon="🏠", layout="wide")
@@ -15,5 +15,5 @@ with st.form("pilot_form"):
         st.switch_page(f"pages/{pilot_name}.py")
 
 show_separator()
-show_logos()
+show_logos_from_list()
 show_separator()
