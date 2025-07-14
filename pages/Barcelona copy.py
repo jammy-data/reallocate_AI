@@ -18,6 +18,7 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from utils.helpers import load_parquet_from_ckan  # Custom function
+from utils.layout import show_logo_image, show_separator, show_logos_from_list
 from ckanapi import RemoteCKAN  # External library
 
 # -------------------------- CONFIG --------------------------
@@ -28,19 +29,6 @@ DATASETS = {
     "Bike & PMV by sex": "bike_and_pmv_by_sex",
     "Public accessibility": "streets_accessibility"
 }
-
-LOGOS = [
-    {
-        "src": "https://reallocatemobility.eu/maintemplate/data/logos/logo.png",
-        "href": "https://reallocatemobility.eu",
-        "alt": "Reallocate Logo"
-    },
-    {
-        "src": "https://www.bsc.es/sites/default/files/public/styles/bscw2_-_simple_crop_style/public/bscw2/pages/discover-bsc/bsc-branding-identity-logo-header_0.jpg?itok=BdjkMwL6&sc=569a3a63c536723072a6d292da3890ca",
-        "href": "https://www.bsc.es",
-        "alt": "BSC Logo"
-    }
-]
 
 # ---------------------- HELPER FUNCTIONS ----------------------
 
@@ -89,31 +77,6 @@ def display_timeseries(df):
     )
     st.plotly_chart(fig)
 
-def inject_footer_logos(logos):
-    css = """
-    <style>
-    .image-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        margin: 20px 0;
-    }
-    .image-container img {
-        max-height: 80px;
-        max-width: 150px;
-    }
-    </style>
-    """
-    st.markdown(css, unsafe_allow_html=True)
-
-    html = '<div class="image-container">'
-    for logo in logos:
-        html += f'<a href="{logo["href"]}" target="_blank"><img src="{logo["src"]}" alt="{logo["alt"]}"></a>'
-    html += "</div>"
-
-    st.markdown(html, unsafe_allow_html=True)
-
 # ---------------------- MAIN APP ----------------------
 
 def main():
@@ -141,7 +104,7 @@ def main():
         st.error(f"Failed to load data: {e}")
 
     st.write("---")
-    inject_footer_logos(LOGOS)
+    show_logos_from_list()  # Uses default LOGOS from layout    
     st.write("---")
 
 if __name__ == "__main__":
