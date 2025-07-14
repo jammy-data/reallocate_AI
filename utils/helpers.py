@@ -3,7 +3,9 @@ import io
 import requests
 import pandas as pd
 from ckanapi import RemoteCKAN
+import streamlit as st
 
+@st.cache_data(show_spinner="Loading dataset...")
 def load_parquet_from_ckan(dataset_name: str, ckan_url: str = "https://reallocate-ckan.iti.gr") -> pd.DataFrame:
     """
     Fetches the URL of a Parquet resource from the specified CKAN dataset
