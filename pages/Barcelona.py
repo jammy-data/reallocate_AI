@@ -1,5 +1,5 @@
 """Streamlit app to fetch and display datasets from a given API with caching and error handling."""
-
+import os
 from io import StringIO, BytesIO
 import streamlit as st 
 import requests
@@ -8,7 +8,6 @@ import plotly.express as px
 import geopandas as gpd
 from shapely.geometry import Point
 from dotenv import load_dotenv
-import os
 load_dotenv()
 st.logo("images/reallocate_logo.png", size = 'large')
 
