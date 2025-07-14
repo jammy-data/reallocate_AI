@@ -39,7 +39,7 @@ def display_geodata(df):
 
     geo_cols = [col for col in gdf.columns if 'GIS' in col.upper()]
     time_cols = [col for col in gdf.columns if 'Data' in col]
-    exclude = geo_cols + time_cols
+    exclude = geo_cols + time_cols + ["geometry"]
     VARIABLES = [col for col in gdf.columns if col not in exclude]
 
     variable_name = st.selectbox("Choose a variable", VARIABLES)
