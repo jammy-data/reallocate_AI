@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.logo("images/reallocate_logo.png", size = 'large')
+#st.logo("images/reallocate_logo.png", size = 'large')
 
 if st.button("Homepage"):
     st.switch_page("Home.py")

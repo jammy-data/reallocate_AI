@@ -9,7 +9,7 @@ import geopandas as gpd
 from shapely.geometry import Point
 from dotenv import load_dotenv
 load_dotenv()
-st.logo("images/reallocate_logo.png", size = 'large')
+#st.logo("images/reallocate_logo.png", size = 'large')
 
 # Define your datasets and the shared API key
 API_KEY = os.getenv("API_KEY")
