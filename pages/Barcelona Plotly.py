@@ -80,7 +80,7 @@ def display_timeseries(df):
 
 def main():
     st.set_page_config(page_title="Dataset Explorer")
-    st.logo("images/reallocate_logo.png", size='large')
+    #st.logo("images/reallocate_logo.png", size='large')
     st.title("Dataset Explorer")
 
     if st.button("Homepage"):
