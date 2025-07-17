@@ -21,5 +21,6 @@ dependencies = [
     "plotly",
     "ckanapi>=4.8",
     "pyarrow>=20.0.0",
-    "streamlit-keplergl>=0.3.0"
+    "streamlit-keplergl>=0.3.0",
+    "st-pages>=1.0.1",
 ]
