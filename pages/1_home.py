@@ -6,6 +6,19 @@ from datetime import datetime
 # st.set_page_config(page_title="Pilot Overview", layout="wide")
 st.title("🧭 Pilot Projects Overview")
 
+pages = [
+    "pages/Barcelona.py",
+    "pages/Gothenburg.py",
+    "pages/Barcelona Kepler.py",
+    "pages/Barcelona Plotly.py",
+]
+
+cols = st.columns(len(pages))
+
+for col, page_path in zip(cols, pages):
+    with col:
+        st.page_link(page=page_path)
+
 # Load pilot data
 pilots = load_generic_data() 
 
