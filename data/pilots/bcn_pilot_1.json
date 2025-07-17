@@ -1,0 +1,39 @@
+{
+  "id": "paris_mobility",
+  "city": "Paris",
+  "title": "Mobility Optimization",
+  "image": "paris.jpg",
+  "tabs": {
+    "info": {
+      "description": "This pilot explores mobility patterns...",
+      "location_description": "The pilot takes place in the 14th district...",
+      "map_bounds": {
+        "lat": 48.833,
+        "lon": 2.333,
+        "zoom": 13
+      }
+    },
+    "kpis": [
+      {
+        "name": "Average Speed",
+        "description": "Measures average vehicle speed over time",
+        "data_file": "average_speed.csv"
+      },
+      {
+        "name": "Traffic Volume",
+        "description": "Number of vehicles per hour",
+        "data_file": "traffic_volume.csv"
+      }
+    ],
+    "dashboard": {
+      "description": "This dashboard shows real-time traffic sensor data.",
+      "interaction": "Use the dropdowns to filter by time and sensor location.",
+      "selectors": ["time_range", "sensor_id"],
+      "map_data_file": "dashboard_map_data.geojson"
+    }
+  },
+  "footer": {
+    "logos": ["eu_logo.png", "city_logo.png"],
+    "more_info": "For more details, visit our main website."
+  }
+}
