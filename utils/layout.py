@@ -16,7 +16,7 @@ LOGOS = [
 ]
 
 def show_logo_image():
-    st.image("images/reallocate_logo.png", width=200)
+    st.image("assets/images/reallocate_logo.png", width=200)
 
 def show_separator():
     st.markdown("---")
