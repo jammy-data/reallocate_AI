@@ -1,0 +1,12 @@
+[
+  {
+    "id": "paris_mobility",
+    "city": "Paris",
+    "title": "Mobility Optimization"
+  },
+  {
+    "id": "berlin_energy",
+    "city": "Berlin",
+    "title": "Smart Energy Grid"
+  }
+]
