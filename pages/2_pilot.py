@@ -3,15 +3,18 @@ import streamlit as st
 from utils.data_loader import load_pilot_data
 from components import header, footer, tab_info, tab_kpis, tab_dashboard
 
-# Get query param
-query_params = st.query_params
-pilot_id = query_params.get("pilot")
+
+# Read pilot ID from query param
+pilot_id = st.query_params.get("pilot")
 
 if not pilot_id:
     st.error("No pilot selected.")
     st.stop()
 
 pilot = load_pilot_data(pilot_id)
+st.title(pilot_id)
+
+
 
 # Render header
 header.render(pilot)
