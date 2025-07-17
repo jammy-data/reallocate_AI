@@ -23,10 +23,10 @@ with tab1:
     tab_info.render(pilot["tabs"]["Pilot Info"])
 
 with tab2:
-    tab_kpis.render(pilot["tabs"]["kpis"])
+    tab_kpis.render(pilot["tabs"]["KPIs"])
 
 with tab3:
-    tab_dashboard.render(pilot["tabs"]["dashboard"])
+    tab_dashboard.render(pilot["tabs"]["Dashboard"])
 
 # Render footer
-footer.render(pilot["footer"])
+# footer.render(pilot["footer"])

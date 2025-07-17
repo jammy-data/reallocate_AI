@@ -1,11 +1,10 @@
 import streamlit as st
 
 def render(info):
-    st.markdown(f"### Description")
+    st.markdown("### Description")
     st.write(info.get("description", "No description available."))
 
-    st.markdown(f"### Location")
-    st.write(info.get("location", "No location description provided."))
+    st.markdown(f"### Location, {info.get('location', 'No location provided.')}")
 
     # Optional: map placeholder
     if "lat" in info and "lon" in info:
