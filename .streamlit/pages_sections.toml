@@ -34,6 +34,11 @@ name = "City Overview"
 icon = "📝"
 
 [[pages]]
+name = "Hide this"
+icon = "🚫"
+is_section = true
+
+[[pages]]
 path = "pages/2_pilot.py"
 name = "Pilot"
-icon = "📝"
+icon = "🚫"
