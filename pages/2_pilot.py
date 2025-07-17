@@ -12,9 +12,6 @@ if not pilot_id:
     st.stop()
 
 pilot = load_pilot_data(pilot_id)
-st.title(pilot_id)
-
-
 
 # Render header
 header.render(pilot)
@@ -23,7 +20,7 @@ header.render(pilot)
 tab1, tab2, tab3 = st.tabs(["Pilot Info", "KPIs", "Dashboard"])
 
 with tab1:
-    tab_info.render(pilot["tabs"]["info"])
+    tab_info.render(pilot["tabs"]["Pilot Info"])
 
 with tab2:
     tab_kpis.render(pilot["tabs"]["kpis"])
