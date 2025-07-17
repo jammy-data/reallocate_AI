@@ -11,4 +11,4 @@ wheels/
 
 #API info
 .env
-data/
+data/ckan/
