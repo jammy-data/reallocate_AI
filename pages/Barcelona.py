@@ -23,7 +23,7 @@ DATASETS = {
 }
 #Add a home button to go back to the homepage
 if st.button("Homepage"):
-    st.switch_page("Home.py")
+    st.switch_page("pages/1_home.py")
 
 # Streamlit dropdown
 st.title("Dataset Explorer")

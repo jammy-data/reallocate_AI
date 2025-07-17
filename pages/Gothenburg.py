@@ -4,7 +4,8 @@ import pandas as pd
 #st.logo("images/reallocate_logo.png", size = 'large')
 
 if st.button("Homepage"):
-    st.switch_page("Home.py")
+    st.switch_page("pages/1_home.py")
+
 
 st.title("Gothenburg Dataset Explorer")
 st.write("This is a test page for the Gothenburg dataset explorer.")

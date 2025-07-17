@@ -117,7 +117,8 @@ def main():
     st.title("Dataset Explorer")
 
     if st.button("Homepage"):
-        st.switch_page("Home.py")
+        st.switch_page("pages/1_home.py")
+
 
     dataset_name = st.selectbox("Choose a dataset", list(DATASETS.keys()))
     dataset_key = DATASETS[dataset_name]
