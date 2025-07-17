@@ -1,33 +1,24 @@
 {
   "id": "gothenburg_pilot_1",
   "city": "Gothenburg",
-  "title": "Safe System Approach for Children’s Active Travel in Peri-Urban Areas",
-  "name": "Gothenburg (pilot 1)",
-  "image": "https://fasttrackmobility.eu/fileadmin/_processed_/6/7/csm_mika-baumeister-7rm_qNXbqxs-unsplash_bf8fc657fc.jpg",
-  "start_date": "2023-01-04",
-  "end_date": "2025-12-31",
-  "duration_months": 35,
-  "description": "In the neighbourhood of Bergum Gunnilse...",
-  "lessons_learned": "Coming soon",
-  "thematic_clusters": ["Safe & Sustainable Schools"],
-  "impact_areas": ["Road Safety", "Transformative Governance"],
-  "kpis": [1, 2, 9],
-  "umi_categories": ["Modal Share"],
-  "sources": "",
-  "replication_tips": "",
-  "location": {
-    "lat": 57.70887,
-    "lon": 11.97456
-  },
-  "dashboard": {
-    "url": "",
-    "description": "Dashboard coming soon.",
-    "interaction": "",
-    "selectors": [],
-    "map_data_file": ""
-  },
-  "footer": {
-    "logos": [],
-    "more_info": "For more details, visit our main website."
+  "title": "Safe System Approach for Children’s Active Travel in Peri-Urban Areas (Pilot 1)",
+  "image": "https://reallocatemobility.eu/fileadmin/user_upload/Images/Page_Headers/Goteborg-Dudlajzov-dreamstime-246987644_2.jpg",
+  "tabs": {
+    "Pilot Info": {
+      "description": "In the neighbourhood of Bergum Gunnilse key mobility challenges concern insufficient lighting and a lack of pedestrian and bicycle paths as a consequence, many prefer to move around by car. ",
+      "location": "Bergum Gunnilse",
+      "lat": "57,70887",
+      "lon": "11,97456"
+    },
+    "KPIs": [
+      "1",
+      "2",
+      "9"
+    ],
+    "Dashboard": {
+      "title": "",
+      "description": "",
+      "url": NaN
+    }
   }
 }
