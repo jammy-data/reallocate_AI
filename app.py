@@ -1,20 +1,26 @@
 import streamlit as st
+from streamlit import Page
 
-from st_pages import add_page_title, get_nav_from_toml, hide_pages
+# All your regular pages
+home = Page("pages/1_home.py", title="Home", icon="🏠")
+barcelona= Page("pages/Barcelona.py", title="Barcelona", icon="📄")
+barcelona_kepler = Page("pages/Barcelona Kepler.py", title="Kepler Map", icon="🗺️")
+barcelona_plotly = Page("pages/Barcelona Plotly.py", title="Plotly Map", icon="📊")
+gothenburg = Page("pages/Gothenburg.py", title="Gothenburg", icon="📝")
+pilot = Page("pages/2_pilot.py", title="Pilot", icon="🚫")
 
-st.set_page_config(layout="wide")
+# Pilot page — included in routing system, but NOT added to menu
+pilot = Page("pages/2_pilot.py", title="Pilot", icon="🚫")
 
-# hide_pages(["Pilot"])
-
-sections = st.sidebar.toggle("Sections", value=True, key="use_sections")
-
-nav = get_nav_from_toml(
-    ".streamlit/pages_sections.toml" if sections else ".streamlit/pages.toml"
+# Include *all* pages in routing system so Streamlit can serve them
+pg = st.navigation(
+{
+    "Home": [home],
+    "Barcelona 🌆": [barcelona, barcelona_kepler, barcelona_plotly],
+    "Gothenburg 🏙️": [gothenburg],
+    "Pilot": [pilot]  # Pilot page is included here for routing
+},
+position="hidden"#Change to make pages visiable
 )
-
-
-pg = st.navigation(nav)
-
-# add_page_title(pg)
 
 pg.run()
