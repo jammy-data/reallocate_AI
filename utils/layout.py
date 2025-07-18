@@ -1,19 +1,7 @@
-# utils/layout.py
-
 import streamlit as st
+from utils.data_loader import load_logos
 
-LOGOS = [
-    {
-        "src": "https://reallocatemobility.eu/maintemplate/data/logos/logo.png",
-        "href": "https://reallocatemobility.eu",
-        "alt": "Reallocate Logo"
-    },
-    {
-        "src": "https://www.bsc.es/sites/default/files/public/styles/bscw2_-_simple_crop_style/public/bscw2/pages/discover-bsc/bsc-branding-identity-logo-header_0.jpg?itok=BdjkMwL6&sc=569a3a63c536723072a6d292da3890ca",
-        "href": "https://www.bsc.es",
-        "alt": "BSC Logo"
-    }
-]
+LOGOS = load_logos()
 
 def show_logo_image():
     st.image("assets/images/reallocate_logo.png", width=200)
@@ -39,9 +27,10 @@ def show_logos_from_list(logos=LOGOS):  # Default to the global LOGOS
     """
     st.markdown(css, unsafe_allow_html=True)
 
-    html = '<div class="image-container">'
-    for logo in logos:
-        html += f'<a href="{logo["href"]}" target="_blank"><img src="{logo["src"]}" alt="{logo["alt"]}"></a>'
-    html += "</div>"
-
+    html = f"""<div class="image-container">
+                    <img src="{LOGOS["reallocate"]["src"]}"></a>
+                    <img src="{LOGOS["bsc"]["src"]}"></a>
+                </div>
+    """
     st.markdown(html, unsafe_allow_html=True)
+
