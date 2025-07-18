@@ -1,0 +1,17 @@
+
+{
+    "reallocate": {
+        "src": "https://reallocatemobility.eu/maintemplate/data/logos/logo.png",
+        "href": "https://reallocatemobility.eu",
+        "alt": "Reallocate Logo"
+    },
+    "bsc": {
+        "src": "https://www.bsc.es/sites/default/files/public/styles/bscw2_-_simple_crop_style/public/bscw2/pages/discover-bsc/bsc-branding-identity-logo-header_0.jpg?itok=BdjkMwL6&sc=569a3a63c536723072a6d292da3890ca",
+        "href": "https://www.bsc.es",
+        "alt": "BSC Logo"
+    },
+    "iti": {
+        "src": "./static/logos/iti.jpg",
+        "alt_text": "ITI Logo"
+    }
+}
