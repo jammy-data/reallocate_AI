@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit import Page
 
+st.set_page_config(layout="wide")
+
 # All your regular pages
 home = Page("pages/1_home.py", title="Home", icon="🏠")
 barcelona= Page("pages/Barcelona.py", title="Barcelona", icon="📄")
