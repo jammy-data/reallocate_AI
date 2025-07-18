@@ -49,4 +49,4 @@ if "tab" in query:
         components.v1.html(js_code, height=0)
     
 # Render footer
-# footer.render(pilot["footer"])
+footer.render()
