@@ -10,7 +10,6 @@ barcelona_kepler = Page("pages/Barcelona Kepler.py", title="Kepler Map", icon="�
 barcelona_plotly = Page("pages/Barcelona Plotly.py", title="Plotly Map", icon="📊")
 gothenburg = Page("pages/Gothenburg.py", title="Gothenburg", icon="📝")
 pilot = Page("pages/2_pilot.py", title="Pilot", icon="🚫")
-pilot = Page("pages/2_pilot.py", title="Pilot", icon="🚫")
 
 # Include *all* pages in routing system so Streamlit can serve them
 pg = st.navigation(
