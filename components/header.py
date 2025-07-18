@@ -1,6 +1,6 @@
 import streamlit as st
 
-def render(pilot):
+def render():
 
     # st.image(
     #     pilot["image"],
@@ -8,11 +8,18 @@ def render(pilot):
     # )
     # st.markdown(f"## {pilot['city']} — {pilot['title']}")
 
-    st.markdown(
-        f"""
-        <img src="{pilot['image']}" 
-             style="width: 100%; max-height: 40vh; object-fit: cover; border-radius: 10px;">
-        <h2>{pilot['city']} — {pilot['title']}</h2>
-        """,
-        unsafe_allow_html=True
-    )
+
+
+    pages = {
+        "Homepage": "pages/1_home.py",
+        "Barcelona": "pages/Barcelona.py",
+        "Gothenburg": "pages/Gothenburg.py",
+        "Barcelona Kepler": "pages/Barcelona Kepler.py",
+        "Barcelona Plotly": "pages/Barcelona Plotly.py",
+    }
+
+    cols = st.columns(len(pages))
+
+    for col, (page_name, page_path) in zip(cols, pages.items()):
+        with col:
+            st.page_link(page=page_path, label=page_name)
