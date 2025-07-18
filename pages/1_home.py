@@ -1,23 +1,13 @@
 import streamlit as st
 from utils.data_loader import load_generic_data
 from datetime import datetime
+from components import header,footer
 # from utils.helpers import slugify  # We'll create this next
 
+header.render()
 # st.set_page_config(page_title="Pilot Overview", layout="wide")
 st.title("🧭 Pilot Projects Overview")
 
-pages = [
-    "pages/Barcelona.py",
-    "pages/Gothenburg.py",
-    "pages/Barcelona Kepler.py",
-    "pages/Barcelona Plotly.py",
-]
-
-cols = st.columns(len(pages))
-
-for col, page_path in zip(cols, pages):
-    with col:
-        st.page_link(page=page_path)
 
 # Tab selector
 tab = st.selectbox("Select a tab", ["Pilot Info", "KPIs", "Dashboard"])
@@ -49,3 +39,5 @@ for pilot in pilots:
                </a>""",
             unsafe_allow_html=True,
         )
+
+footer.render()
