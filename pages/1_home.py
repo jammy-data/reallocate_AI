@@ -19,6 +19,9 @@ for col, page_path in zip(cols, pages):
     with col:
         st.page_link(page=page_path)
 
+# Tab selector
+tab = st.selectbox("Select a tab", ["Pilot Info", "KPIs", "Dashboard"])
+
 # Load pilot data
 pilots = load_generic_data() 
 
@@ -39,7 +42,7 @@ for pilot in pilots:
         # st.image(image_url, caption=name, width=300)
 
         # Navigate to detailed page
-        link = f"pilot?pilot={pilot['id']}"
+        link = f"pilot?pilot={pilot['id']}&tab={tab}"
         st.markdown(
             f"""<a href="{link}" target="_self">
                 <button style="margin-top: 1rem;">Show more</button>
