@@ -15,7 +15,7 @@ if not pilot_id:
 pilot = load_pilot_data(pilot_id)
 
 # Render header
-header.render(pilot)
+header.render()
 
 # Tabs
 tab_names = ["Pilot Info", "KPIs", "Dashboard"]
