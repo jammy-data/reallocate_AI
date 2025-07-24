@@ -12,10 +12,10 @@ def render():
 
     pages = {
         "Homepage": "pages/1_home.py",
-        "Barcelona": "pages/Barcelona.py",
-        "Gothenburg": "pages/Gothenburg.py",
-        "Barcelona Kepler": "pages/Barcelona Kepler.py",
-        "Barcelona Plotly": "pages/Barcelona Plotly.py",
+        "Barcelona": "pages/old/Barcelona.py",
+        "Gothenburg": "pages/old/Gothenburg.py",
+        "Barcelona Kepler": "pages/old/Barcelona Kepler.py",
+        "Barcelona Plotly": "pages/old/Barcelona Plotly.py",
     }
 
     cols = st.columns(len(pages))
