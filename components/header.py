@@ -12,8 +12,8 @@ def render():
 
     pages = {
         "Homepage": "pages/1_home.py",
-        "Barcelona": "pages/old/Barcelona.py",
-        "Gothenburg": "pages/old/Gothenburg.py",
+        # "Barcelona": "pages/old/Barcelona.py",
+        # "Gothenburg": "pages/old/Gothenburg.py",
         "Barcelona Kepler": "pages/old/Barcelona Kepler.py",
         "Barcelona Plotly": "pages/old/Barcelona Plotly.py",
     }
