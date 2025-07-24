@@ -30,6 +30,7 @@ def show_logos_from_list(logos=LOGOS):  # Default to the global LOGOS
     html = f"""<div class="image-container">
                     <img src="{LOGOS["reallocate"]["src"]}"></a>
                     <img src="{LOGOS["bsc"]["src"]}"></a>
+                    <img src="{LOGOS["iti"]["src"]}"></a>
                 </div>
     """
     st.markdown(html, unsafe_allow_html=True)
