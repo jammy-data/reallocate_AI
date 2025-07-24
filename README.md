@@ -36,7 +36,11 @@ To do this in shell run ```cp .env.example .env ```
 You can start the app and begin navigating the dashboard by entering into the terminal:
 
 ```sh
-streamlit run Home.py
+source /home/lliebsch/reallocate_AI/.venv/bin/activate
+```
+
+```sh
+streamlit run app.py
 ```
 
 This project was create with uv.
