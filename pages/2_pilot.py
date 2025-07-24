@@ -3,7 +3,7 @@ import streamlit as st
 from streamlit import components
 from utils.data_loader import load_pilot_data
 from components import header, footer
-from components.pilot import info, kpis, dashboard
+from components.pilot import tab_info, tab_kpis, tab_dashboard
 
 # Read pilot ID from query param
 pilot_id = st.query_params.get("pilot")
