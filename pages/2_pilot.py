@@ -30,7 +30,7 @@ with tab2:
 with tab3:
     tab_dashboard.render(pilot["tabs"]["Dashboard"])
 
-#Test change TAB
+#Change tab based on query param
 query = st.query_params
 if "tab" in query:
     tab_name = query["tab"]
