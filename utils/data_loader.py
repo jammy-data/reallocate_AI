@@ -20,6 +20,11 @@ def load_all_pilots(data_dir="config/pilots"):
                 pilots.append(pilot_data)
     return pilots
 
+def load_kpi(data_dir="config/"):
+    with open(os.path.join(data_dir, "kpi.json"), "r", encoding="utf-8") as f:
+        data = json.load(f)
+        return data if isinstance(data, list) else [data]
+
 def load_pilot_data(pilot_id):
     path = os.path.join("data", "pilots", f"{pilot_id}.json")
     with open(path, "r", encoding="utf-8") as f:
