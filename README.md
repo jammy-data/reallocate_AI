@@ -36,7 +36,7 @@ To do this in shell run ```cp .env.example .env ```
 You can start the app and begin navigating the dashboard by entering into the terminal:
 
 ```sh
-source /home/lliebsch/reallocate_AI/.venv/bin/activate
+source .venv/bin/activate
 ```
 
 ```sh
