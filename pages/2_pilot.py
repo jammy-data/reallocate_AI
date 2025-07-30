@@ -17,6 +17,15 @@ pilot = load_pilot_data(pilot_id)
 # Render header
 header.render()
 
+st.markdown(
+    f"""
+    <img src="{pilot['image']}" 
+    style="width: 100%; max-height: 20vh; object-fit: cover; border-radius: 10px;">
+    <h2>{pilot['city']} — {pilot['title']}</h2>
+    """,
+    unsafe_allow_html=True
+)
+
 # Tabs
 tab_names = ["Pilot Info", "KPIs", "Dashboard"]
 tab1, tab2, tab3 = st.tabs(tab_names)
